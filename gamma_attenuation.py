@@ -28,7 +28,8 @@ def get_layer_description(layers):
         description += layer[0] + " (" + str(layer[1]) + " cm), "
     return description[:-2]
 
-# Loop through each file in the directory
+neutron_data = pd.read_csv(DATA_DIR + "/neutron_att_coeff.csv", sep=',')
+
 for filename in os.listdir(DATA_DIR + "/gamma_att_coeff"):
     if (filename == ".DS_Store" or filename == "desktop.ini"):
         continue
@@ -36,23 +37,15 @@ for filename in os.listdir(DATA_DIR + "/gamma_att_coeff"):
     print("Plotting " + filename)
     # Read in the data
     df = pd.read_csv(DATA_DIR + "/gamma_att_coeff/" + filename, sep=',')
-    gamma_att_coeff[filename.split(".")[0]] = df
+    material_name = filename.split(".")[0]
 
-    # # Plot the data
-    # fig, ax = plt.subplots()
-    # ax.plot(df['energy'], df['coeff'], label=filename)
+    # Calculate the gamma attenuation coefficient for 2.615 MeV
+    gamma_energy = 2.615
+    gamma_att_coeff[material_name] = np.interp(gamma_energy, df['energy'], df['coeff'])
 
-    # # Add axis labels
-    # ax.set_xlabel('Energy (MeV)')
-    # ax.set_ylabel('Attenuation coefficient (cm^2/g)')
-    # ax.set_xscale('log')
-    # ax.set_yscale('log')
+    # 
 
-    # # Save the figure
-    # fig.savefig(filename + '.png', dpi=300, bbox_inches='tight')
-    
-    # # Clear the figure
-    # plt.close()
+print("Gamma attenuation coefficients:")
 
 print("Density: " + str(density))
 print("Attenuation coefficients: " + str(gamma_att_coeff))
