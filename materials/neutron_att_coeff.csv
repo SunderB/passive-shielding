@@ -1,5 +1,5 @@
 material,molar_mass,density,scattering,absorption_2200
 "copper",63.546,8.96,8.03,3.78
 "lead",207.2,11.35,11.118,0.171
-"water",18.0153,0.997,-1,-1
+"water",18.0153,0.997,168,1365
 "polyethylene",14.0266,0.96,-1,-1
