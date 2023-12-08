@@ -1,4 +1,6 @@
 material,molar_mass,density,scattering,absorption_2200
+"hydrogen",1.00794,0.08988,82.02,0.3326
+"oxygen",15.9994,1.429,4.232,0.00019
 "copper",63.546,8.96,8.03,3.78
 "lead",207.2,11.35,11.118,0.171
 "water",18.0153,0.997,168,1365
