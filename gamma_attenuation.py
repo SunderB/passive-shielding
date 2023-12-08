@@ -18,17 +18,15 @@ layers = [
     ["copper", 10]
 ]
 
-with open(DATA_DIR + "/density.json") as f:
-    data = json.load(f)
-    density = data
+# with open(DATA_DIR + "/density.json") as f:
+#     data = json.load(f)
+#     density = data
 
-def get_layer_description(layers):
-    description = ""
-    for layer in layers:
-        description += layer[0] + " (" + str(layer[1]) + " cm), "
-    return description[:-2]
-
-neutron_data = pd.read_csv(DATA_DIR + "/neutron_att_coeff.csv", sep=',')
+# def get_layer_description(layers):
+#     description = ""
+#     for layer in layers:
+#         description += layer[0] + " (" + str(layer[1]) + " cm), "
+#     return description[:-2]
 
 for filename in os.listdir(DATA_DIR + "/gamma_att_coeff"):
     if (filename == ".DS_Store" or filename == "desktop.ini"):
@@ -43,11 +41,11 @@ for filename in os.listdir(DATA_DIR + "/gamma_att_coeff"):
     gamma_energy = 2.615
     gamma_att_coeff[material_name] = np.interp(gamma_energy, df['energy'], df['coeff'])
 
-    # 
+
 
 print("Gamma attenuation coefficients:")
 
-print("Density: " + str(density))
+df = pd.read_csv(DATA_DIR + "/neutron_att_coeff.csv", sep=',')
 print("Attenuation coefficients: " + str(gamma_att_coeff))
     
 # # Determine the reduction in intensity
@@ -70,13 +68,14 @@ print("Attenuation coefficients: " + str(gamma_att_coeff))
 # # ax.set_yscale('log')
 # fig.tight_layout()
 
-
-plt.show()
+print(df)
 
 energy = 2.615
 material = "water"
+material_data = df[df['material'] == material]
+density = material_data['density'].values[0]
 
-max_count_rate = Decimal(1)/Decimal(360*24*60*60) # 1 count per year
+max_count_rate = Decimal(0.1)/Decimal(360*24*60*60) # 1 count per year
 print(f"Max count rate: {max_count_rate} Hz = {max_count_rate*60*60*24*365} counts/year")
 
 incoming_counts = Decimal("1.3e-2")
@@ -85,7 +84,5 @@ print(f"Incoming count rate: {incoming_counts} Hz = {incoming_counts*60*60*24*36
 reduction_required = float(max_count_rate / incoming_counts)
 print(f"Reduction required: {reduction_required}")
 
-
-coeff = np.interp(energy, gamma_att_coeff["lead"]['energy'], gamma_att_coeff["lead"]['coeff'])
-thickness = -(np.log(reduction_required))/(coeff * density["lead"])
+thickness = -(np.log(reduction_required))/(gamma_att_coeff[material] * density)
 print(f"Thickness required: {thickness} cm")

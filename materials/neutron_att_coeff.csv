@@ -5,3 +5,4 @@ material,molar_mass,density,scattering,absorption_2200
 "lead",207.2,11.35,11.118,0.171
 "water",18.0153,0.997,168,1365
 "polyethylene",14.0266,0.96,-1,-1
+"polytetrafluoroethylene",-1,2.2,-1,-1
